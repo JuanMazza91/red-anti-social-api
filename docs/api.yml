@@ -1,0 +1,1027 @@
+openapi: 3.0.3
+info:
+  title: Red Anti-Social
+  version: 1.0.1
+  description: Documentación API de Red Anti-Social.
+
+paths:
+  /usuarios:
+    get:
+      summary: Obtener todos los usuarios
+      tags:
+        - Usuarios
+      responses:
+        "200":
+          description: Lista de usuarios obtenida correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "500":
+          description: Error interno del servidor.
+
+    post:
+      summary: Crear un nuevo usuario
+      tags:
+        - Usuarios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - nickname
+                - email
+                - password
+              properties:
+                nickname:
+                  type: string
+                  example: "anti_user"
+                email:
+                  type: string
+                  format: email
+                  example: "anti_user@mail.com"
+                password:
+                  type: string
+                  format: password
+                  example: "password123"
+      responses:
+        "201":
+          description: Usuario creado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Usuario creado correctamente"
+                  usuario:
+                    $ref: "#/components/schemas/User"
+        "400":
+          description: Datos de entrada inválidos o faltantes.
+        "500":
+          description: Error al crear el usuario.
+
+  /usuarios/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID único del usuario
+        schema:
+          type: string
+          example: "64f1bc23e4b0a123456789ab"
+
+    get:
+      summary: Obtener un usuario por ID
+      tags:
+        - Usuarios
+      responses:
+        "200":
+          description: Usuario encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: Usuario no encontrado.
+        "500":
+          description: Error al obtener el usuario.
+
+    put:
+      summary: Actualizar datos de un usuario
+      tags:
+        - Usuarios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nickname:
+                  type: string
+                  example: "nuevo_nick"
+                email:
+                  type: string
+                  format: email
+                  example: "nuevo_email@mail.com"
+                password:
+                  type: string
+                  format: password
+                  example: "nuevaContrasena123"
+      responses:
+        "200":
+          description: Usuario actualizado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Usuario actualizado correctamente"
+        "400":
+          description: Datos de actualización inválidos.
+        "404":
+          description: Usuario no encontrado.
+        "500":
+          description: Error al actualizar el usuario.
+
+    delete:
+      summary: Eliminar un usuario por ID
+      tags:
+        - Usuarios
+      responses:
+        "200":
+          description: Usuario eliminado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Usuario eliminado"
+        "404":
+          description: Usuario no encontrado.
+        "500":
+          description: Error al eliminar el usuario.
+
+  /usuarios/{id}/posts:
+    get:
+      summary: Obtener publicaciones de un usuario determinado
+      tags:
+        - Usuarios
+      description: Retorna todos los posts de la base de datos donde el autor coincide con el ID provisto en la URL.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID único del usuario del cual se quieren obtener los posts.
+          schema:
+            type: string
+            example: "64f1bc23e4b0a123456789ab"
+      responses:
+        "200":
+          description: Lista de posts del usuario devuelta con éxito.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+        "500":
+          description: Error interno al obtener los posts.
+
+  /usuarios/{id}/follow:
+    post:
+      summary: Seguir a un usuario
+      tags:
+        - Interacciones
+      description: Agrega al usuario autenticado a los seguidores del objetivo y viceversa.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del usuario al que se desea seguir.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Usuario seguido con éxito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Usuario seguido"
+        "400":
+          description: Operación de seguimiento inválida.
+        "404":
+          description: Usuario no encontrado.
+        "500":
+          description: Error al seguir al usuario.
+
+  /usuarios/{id}/unfollow:
+    post:
+      summary: Dejar de seguir a un usuario
+      tags:
+        - Interacciones
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del usuario al que se desea dejar de seguir.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Unfollow completado con éxito.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Unfollow completado"
+        "404":
+          description: Usuario no encontrado.
+        "500":
+          description: Error al dejar de seguir al usuario.
+
+  /tags:
+    get:
+      summary: Obtener todas las etiquetas (tags)
+      tags:
+        - Etiquetas
+      responses:
+        "200":
+          description: Lista de tags obtenida correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
+        "500":
+          description: Error al obtener las etiquetas.
+
+    post:
+      summary: Crear una nueva etiqueta
+      tags:
+        - Etiquetas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - nombre
+              properties:
+                nombre:
+                  type: string
+                  example: "indignado"
+      responses:
+        "201":
+          description: Etiqueta creada con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+        "400":
+          description: El nombre del tag ya existe o es inválido.
+        "500":
+          description: Error al crear la etiqueta.
+
+  /tags/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID único del tag
+        schema:
+          type: string
+          example: "64f1bc23e4b0a12345678902"
+
+    get:
+      summary: Obtener un tag por ID
+      tags:
+        - Etiquetas
+      responses:
+        "200":
+          description: Tag encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+        "404":
+          description: Tag no encontrado.
+        "500":
+          description: Error al obtener el tag.
+
+    put:
+      summary: Actualizar el nombre de un tag
+      tags:
+        - Etiquetas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - nombre
+              properties:
+                nombre:
+                  type: string
+                  example: "re_ofendido"
+      responses:
+        "200":
+          description: Tag actualizado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Tag actualizado correctamente"
+                  tag:
+                    $ref: "#/components/schemas/Tag"
+        "400":
+          description: El nombre del tag ya existe o es inválido.
+        "404":
+          description: Tag no encontrado.
+        "500":
+          description: Error al actualizar el tag.
+
+    delete:
+      summary: Eliminar un tag
+      tags:
+        - Etiquetas
+      description: Elimina el tag y lo desvincula de todos los posts que lo tenían asignado.
+      responses:
+        "200":
+          description: Tag eliminado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Tag eliminado correctamente"
+        "404":
+          description: Tag no encontrado.
+        "500":
+          description: Error al eliminar el tag.
+
+  /tags/{id}/posts:
+    get:
+      summary: Obtener todos los posts asociados a una etiqueta
+      tags:
+        - Etiquetas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la etiqueta
+          schema:
+            type: string
+            example: "64f1bc23e4b0a12345678902"
+      responses:
+        "200":
+          description: Lista de posts populados que contienen este tag.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+        "404":
+          description: La etiqueta no existe.
+        "500":
+          description: Error al obtener los posts de la etiqueta.
+
+  /tags/{id}/posts/{postId}:
+    post:
+      summary: Asignar una etiqueta a un post específico
+      tags:
+        - Etiquetas
+      description: Vincula de forma bidireccional un Tag con un Post agregando sus respectivos IDs.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID de la etiqueta
+          schema:
+            type: string
+        - name: postId
+          in: path
+          required: true
+          description: ID del post al que se le asignará el tag
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Tag asignado con éxito al post.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Tag asignado con éxito al post"
+        "404":
+          description: El tag o el post no existen.
+        "500":
+          description: Error interno del servidor.
+
+  /posts:
+    get:
+      summary: Obtener todos los posts
+      tags:
+        - Posts
+      description: Recupera la lista de posts (desde Redis si está en caché). No realiza populate físico de comentarios ya que se removió del modelo de Post.
+      responses:
+        "200":
+          description: Lista de posts obtenida correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+        "500":
+          description: Error al obtener los posts.
+
+    post:
+      summary: Crear un nuevo post
+      tags:
+        - Posts
+      description: Crea un post e invalida la caché de Redis.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - texto
+                - autor
+              properties:
+                texto:
+                  type: string
+                  example: "Hoy me levanté con menos ganas de ver gente que ayer."
+                autor:
+                  type: string
+                  description: "ID del usuario creador"
+                  example: "64f1bc23e4b0a123456789ab"
+                imagenes:
+                  type: array
+                  items:
+                    type: string
+                  example: ["https://imagenes.com/meme1.jpg"]
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  example: ["64f1bc23e4b0a12345678902"]
+      responses:
+        "201":
+          description: Post creado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Post creado correctamente"
+                  post:
+                    $ref: "#/components/schemas/Post"
+        "500":
+          description: Error al crear el post.
+
+  /posts/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID único del post
+        schema:
+          type: string
+
+    get:
+      summary: Obtener un post por ID
+      tags:
+        - Posts
+      responses:
+        "200":
+          description: Post encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "404":
+          description: El post no existe.
+        "500":
+          description: Error al obtener el post.
+
+    put:
+      summary: Actualizar el texto de un post
+      tags:
+        - Posts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - texto
+              properties:
+                texto:
+                  type: string
+                  example: "Texto del post editado de forma anti-social."
+      responses:
+        "200":
+          description: Post actualizado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Post actualizado correctamente"
+                  post:
+                    $ref: "#/components/schemas/Post"
+        "404":
+          description: El post no existe.
+        "500":
+          description: Error al actualizar el post.
+
+    delete:
+      summary: Eliminar un post
+      tags:
+        - Posts
+      responses:
+        "200":
+          description: Post eliminado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Post eliminado correctamente"
+        "404":
+          description: El post no existe.
+        "500":
+          description: Error al eliminar el post.
+
+  /posts/{id}/comentarios:
+    get:
+      summary: Obtener comentarios visibles de un post
+      tags:
+        - Comentarios
+      description: Procesa y archiva automáticamente los comentarios mayores a 6 meses (cambiando su estado a visible:false) y luego lista únicamente los que siguen activos para el post indicado.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del post del cual se quieren consultar los comentarios.
+          schema:
+            type: string
+            example: "64f1bc23e4b0a123456789ef"
+      responses:
+        "200":
+          description: Lista de comentarios activos filtrada y ordenada correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+        "500":
+          description: Error al obtener los comentarios.
+
+  /posts/{id}/imagenes:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del post
+        schema:
+          type: string
+
+    get:
+      summary: Obtener las imágenes de un post
+      tags:
+        - Posts - Imágenes
+      responses:
+        "200":
+          description: Array de imágenes del post seleccionado.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PostImage"
+        "404":
+          description: El post no existe.
+        "500":
+          description: Error al obtener las imágenes.
+
+    post:
+      summary: Agregar una imagen a un post
+      tags:
+        - Posts - Imágenes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - url
+              properties:
+                url:
+                  type: string
+                  example: "https://imagenes.com/nueva_foto.png"
+      responses:
+        "200":
+          description: Imagen agregada correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Imagen agregada correctamente"
+                  post:
+                    $ref: "#/components/schemas/Post"
+        "404":
+          description: El post no existe.
+        "500":
+          description: Error al agregar la imagen.
+
+  /posts/{id}/upload/imagenes:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID del post
+        schema:
+          type: string
+
+    post:
+      summary: Subir una imagen al servidor y asociarla a un post
+      tags:
+        - Posts - Imágenes
+      description: Sube un archivo de imagen al servidor mediante multipart/form-data, lo almacena en la carpeta /uploads y guarda la URL generada en el post.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - image
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: Archivo de imagen a subir
+      responses:
+        "200":
+          description: Imagen subida y asociada correctamente al post.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Imagen agregada correctamente"
+                  post:
+                    $ref: "#/components/schemas/Post"
+        "404":
+          description: El post no existe.
+        "500":
+          description: Error al subir la imagen.
+
+  /posts/{id}/imagenes/{imageId}:
+    delete:
+      summary: Eliminar una imagen específica de un post
+      tags:
+        - Posts - Imágenes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID del post
+          schema:
+            type: string
+        - name: imageId
+          in: path
+          required: true
+          description: ID del subdocumento de la imagen a borrar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Imagen eliminada del array correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Imagen eliminada correctamente"
+                  post:
+                    $ref: "#/components/schemas/Post"
+        "404":
+          description: El post o la imagen no existen.
+        "500":
+          description: Error al eliminar la imagen.
+
+  /comentarios:
+    get:
+      summary: Obtener todos los comentarios
+      tags:
+        - Comentarios
+      responses:
+        "200":
+          description: Lista de comentarios obtenida correctamente.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+        "500":
+          description: Error al obtener los comentarios.
+
+    post:
+      summary: Crear un nuevo comentario
+      tags:
+        - Comentarios
+      description: Crea un comentario de forma independiente manteniendo únicamente su referencia interna hacia el post asignado.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - contenido
+                - autor
+                - post
+              properties:
+                contenido:
+                  type: string
+                  example: "Totalmente de acuerdo con el desconocido."
+                autor:
+                  type: string
+                  description: "ID del usuario que comenta"
+                  example: "64f1bc23e4b0a123456789ab"
+                post:
+                  type: string
+                  description: "ID del post a comentar"
+                  example: "64f1bc23e4b0a123456789ef"
+      responses:
+        "201":
+          description: Comentario creado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Comentario creado correctamente"
+                  comentario:
+                    $ref: "#/components/schemas/Comment"
+        "500":
+          description: Error al crear el comentario.
+
+  /comentarios/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID único del comentario
+        schema:
+          type: string
+
+    get:
+      summary: Obtener un comentario por ID
+      tags:
+        - Comentarios
+      description: Devuelve el comentario completo, populando los datos del autor (sin password) y el post asociado.
+      responses:
+        "200":
+          description: Comentario obtenido con éxito.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "404":
+          description: El comentario no existe.
+        "500":
+          description: Error al obtener el comentario.
+
+    put:
+      summary: Actualizar el contenido de un comentario
+      tags:
+        - Comentarios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - contenido
+              properties:
+                contenido:
+                  type: string
+                  example: "Contenido del comentario editado."
+      responses:
+        "200":
+          description: Comentario actualizado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Comentario actualizado correctamente"
+                  comentario:
+                    $ref: "#/components/schemas/Comment"
+        "404":
+          description: El comentario no existe.
+        "500":
+          description: Error al actualizar el comentario.
+
+    delete:
+      summary: Eliminar un comentario
+      tags:
+        - Comentarios
+      description: Remueve físicamente el documento de comentario seleccionado sin afectar la colección de posts.
+      responses:
+        "200":
+          description: Comentario eliminado correctamente.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Comentario eliminado correctamente"
+        "404":
+          description: El comentario no existe.
+        "500":
+          description: Error al eliminar el comentario.
+
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - email
+        - nickname
+        - password
+      properties:
+        _id:
+          type: string
+          example: "64f1bc23e4b0a123456789ab"
+        email:
+          type: string
+          format: email
+          example: "usuario@anti-social.com"
+        nickname:
+          type: string
+          example: "hater_pro"
+        password:
+          type: string
+          format: password
+          example: "********"
+          description: "Por seguridad, este campo no se devuelve en los GET (select: false)."
+        seguidos:
+          type: array
+          items:
+            type: string
+            description: "ID de los usuarios seguidos"
+        seguidores:
+          type: array
+          items:
+            type: string
+            description: "ID de los usuarios que siguen a este usuario"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    PostImage:
+      type: object
+      required:
+        - url
+      properties:
+        _id:
+          type: string
+          example: "64f1bc23e4b0a123456789cd"
+        url:
+          type: string
+          example: "https://imagenes.com/post1.jpg"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Post:
+      type: object
+      required:
+        - texto
+        - autor
+      properties:
+        _id:
+          type: string
+          example: "64f1bc23e4b0a123456789ef"
+        texto:
+          type: string
+          example: "Este es un post verdaderamente anti-social."
+        imagenes:
+          type: array
+          items:
+            $ref: "#/components/schemas/PostImage"
+        autor:
+          type: string
+          description: "ID del usuario creador"
+          example: "64f1bc23e4b0a123456789ab"
+        tags:
+          type: array
+          items:
+            type: string
+            description: "IDs de los tags asociados"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Comment:
+      type: object
+      required:
+        - contenido
+        - autor
+        - post
+      properties:
+        _id:
+          type: string
+          example: "64f1bc23e4b0a12345678901"
+        contenido:
+          type: string
+          example: "No podría estar más en desacuerdo."
+        autor:
+          type: string
+          description: "ID del usuario que comentó"
+          example: "64f1bc23e4b0a123456789ab"
+        post:
+          type: string
+          description: "ID del post comentado"
+          example: "64f1bc23e4b0a123456789ef"
+        visible:
+          type: boolean
+          default: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Tag:
+      type: object
+      required:
+        - nombre
+      properties:
+        _id:
+          type: string
+          example: "64f1bc23e4b0a12345678902"
+        nombre:
+          type: string
+          example: "ofendido"
+        posts:
+          type: array
+          items:
+            type: string
+            description: "IDs de los posts que usan este tag"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time

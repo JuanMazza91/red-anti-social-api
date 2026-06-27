@@ -1,0 +1,745 @@
+{
+  "info": {
+    "_postman_id": "fc58d151-56ab-4091-ace7-be5db636c4e7",
+    "name": "MongoDB-Antisocial",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55413138",
+    "_collection_link": "https://go.postman.co/collection/55413138-fc58d151-56ab-4091-ace7-be5db636c4e7?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Obtener todos los usuarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/usuarios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener usuario por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/usuarios/6a3da5ad5b98e032ab855bf1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "usuarios",
+                "6a3da5ad5b98e032ab855bf1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener posts de un usuario",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/usuarios/6a3da5ad5b98e032ab855bf1/posts",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "usuarios",
+                "6a3da5ad5b98e032ab855bf1",
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nickname\": \"rodri2\",\n  \"email\": \"rodri2@mail.com\",\n  \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/usuarios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "usuarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nickname\": \"rodri_nuevo\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/usuarios/6a3da5ad5b98e032ab855bf1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "usuarios",
+                "6a3da5ad5b98e032ab855bf1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/usuarios/6a3da5ad5b98e032ab855bf1",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "usuarios",
+                "6a3da5ad5b98e032ab855bf1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Seguir usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seguidorId\": \"6a3dc7a12067bf59c13f5059\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/usuarios/6a3dca1e1205acfb0bf27fca/follow",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "usuarios",
+                "6a3dca1e1205acfb0bf27fca",
+                "follow"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Dejar de seguir usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seguidorId\": \"6a3dc7a12067bf59c13f5059\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/usuarios/6a3dca1e1205acfb0bf27fca/unfollow",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "usuarios",
+                "6a3dca1e1205acfb0bf27fca",
+                "unfollow"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Posts",
+      "item": [
+        {
+          "name": "Obtener todos los posts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/posts",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener post por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/posts/6a3dcbf42f05427e03208fa4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "posts",
+                "6a3dcbf42f05427e03208fa4"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"texto\": \"Mi primer post\",\n    \"autor\": \"6a3dc7a12067bf59c13f5059\",\n    \"imagenes\": [\n        \"https://imagenes.com/imagen1.jpg\",\n        \"https://imagenes.com/imagen2.jpg\"\n    ]\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/posts",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar post",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"texto\": \"Mi post editado\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/posts/6a3dcbf42f05427e03208fa4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "posts",
+                "6a3dcbf42f05427e03208fa4"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar post",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/posts/6a3da5d65b98e032ab855bf2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "posts",
+                "6a3da5d65b98e032ab855bf2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener comentarios de un post",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/posts/6a3dcbf42f05427e03208fa4/comentarios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "posts",
+                "6a3dcbf42f05427e03208fa4",
+                "comentarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener imágenes de un post",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/posts/6a3dcbf42f05427e03208fa4/imagenes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "posts",
+                "6a3dcbf42f05427e03208fa4",
+                "imagenes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Agregar imagen a un post",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://imagenes.com/imagen.png\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/posts/6a3dcbf42f05427e03208fa4/imagenes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "posts",
+                "6a3dcbf42f05427e03208fa4",
+                "imagenes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Subir imagen al servidor",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "image",
+                  "type": "file",
+                  "value": null
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:3000/posts/6a3dcbf42f05427e03208fa4/upload/imagenes",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "posts",
+                "6a3dcbf42f05427e03208fa4",
+                "upload",
+                "imagenes"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar imagen de un post",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/posts/6a3dcbf42f05427e03208fa4/imagenes/6a3dcee52f05427e03208fce",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "posts",
+                "6a3dcbf42f05427e03208fa4",
+                "imagenes",
+                "6a3dcee52f05427e03208fce"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Comentarios",
+      "item": [
+        {
+          "name": "Obtener todos los comentarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/comentarios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "comentarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener comentario por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/comentarios/6a3dcff42f05427e03208fe2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "comentarios",
+                "6a3dcff42f05427e03208fe2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear comentario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contenido\": \"Mi primer comentario\",\n  \"autor\": \"6a3dca1e1205acfb0bf27fca\",\n  \"post\": \"6a3dcbf42f05427e03208fa4\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/comentarios",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "comentarios"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar comentario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contenido\": \"Comentario editado\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/comentarios/6a3dcfcb2f05427e03208fd6",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "comentarios",
+                "6a3dcfcb2f05427e03208fd6"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar comentario",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/comentarios/6a3dcfcb2f05427e03208fd6",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "comentarios",
+                "6a3dcfcb2f05427e03208fd6"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Tags",
+      "item": [
+        {
+          "name": "Obtener todos los tags",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/tags",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tags"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener tag por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/tags/6a3dd1112f05427e03208ff2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tags",
+                "6a3dd1112f05427e03208ff2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear tag",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"primero\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/tags",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tags"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar tag",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"ultimo\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:3000/tags/6a3dd1112f05427e03208ff2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tags",
+                "6a3dd1112f05427e03208ff2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar tag",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/tags/6a3dd1112f05427e03208ff2",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tags",
+                "6a3dd1112f05427e03208ff2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener posts de un tag",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/tags/6a3dd1002f05427e03208ff0/posts",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tags",
+                "6a3dd1002f05427e03208ff0",
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Asignar tag a un post",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:3000/tags/6a3dd1002f05427e03208ff0/posts/6a3dcbf42f05427e03208fa4",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "3000",
+              "path": [
+                "tags",
+                "6a3dd1002f05427e03208ff0",
+                "posts",
+                "6a3dcbf42f05427e03208fa4"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
