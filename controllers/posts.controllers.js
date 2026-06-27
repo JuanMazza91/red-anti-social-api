@@ -28,7 +28,23 @@ const obtenerPosts = async (req, res) => {
 
 const obtenerPost = async (req, res) => {
   try {
-    const postConComentarios = await req.post.populate("comentarios"); // ahora muestra los comentarios
+    const postConComentarios = await req.post.populate([
+      {
+        path: "autor",
+        select: "nickname",
+      },
+      {
+        path: "tags",
+        select: "nombre"
+      },
+      {
+      path: "comentarios",
+        populate: {
+          path: "autor",
+          select: "nickname",
+          },
+      },
+    ]); // ahora muestra los comentarios
 
     return res.status(200).json(postConComentarios);
   } catch (error) {
