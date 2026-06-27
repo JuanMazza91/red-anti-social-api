@@ -3,6 +3,7 @@ console.log("UnaHur - Anti-Social net");
 const dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
+const cors = require("cors")
 const app = express();
 const conectarDb = require("../config/db");
 const PORT = process.env.PORT || 3000;
@@ -20,6 +21,10 @@ const tagsRouter = require("../routes/tags.routes.js");
 
 //EndPoints
 app.use(express.json());
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  credentials: true,
+}))
 app.use("/uploads", express.static("uploads"));
 app.use("/usuarios", usuariosRouter);
 app.use("/posts", postsRouter);
