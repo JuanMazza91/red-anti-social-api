@@ -35,6 +35,20 @@ const crearComentario = async (req, res) => {
       post: post,
     });
 
+    console.log("Comentario creado:", comentario);
+
+    const postActualizado = await Post.findByIdAndUpdate(
+      post,
+      {
+        $push: { 
+          comentarios: comentario._id 
+        },
+      },
+      { new: true }
+    );
+
+    console.log("Post después de crear comentario:", postActualizado);
+
     await redisClient.del("posts");
 
     return res.status(201).json({

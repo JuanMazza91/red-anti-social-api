@@ -16,7 +16,20 @@ const obtenerPosts = async (req, res) => {
     const posts = await Post.find()
       .populate("autor", "-password")
       .populate("tags", "nombre")
+      .populate({
+        path: "comentarios",
+          populate: {
+            path: "autor",
+            select: "nickname",
+            },
+      },)
       .sort({ createdAt: -1 });
+
+    console.log(
+      posts.map((p) => ({
+        id: p._id,
+        comentarios: p.comentarios?.length,
+    })))
 
     await redisClient.set("posts", JSON.stringify(posts), { EX: 300 });
     return res.status(200).json(posts);
