@@ -18,18 +18,19 @@ const obtenerPosts = async (req, res) => {
       .populate("tags", "nombre")
       .populate({
         path: "comentarios",
-          populate: {
-            path: "autor",
-            select: "nickname",
-            },
-      },)
+        populate: {
+          path: "autor",
+          select: "nickname",
+        },
+      })
       .sort({ createdAt: -1 });
 
     console.log(
       posts.map((p) => ({
         id: p._id,
         comentarios: p.comentarios?.length,
-    })))
+      })),
+    );
 
     await redisClient.set("posts", JSON.stringify(posts), { EX: 300 });
     return res.status(200).json(posts);
@@ -48,14 +49,14 @@ const obtenerPost = async (req, res) => {
       },
       {
         path: "tags",
-        select: "nombre"
+        select: "nombre",
       },
       {
-      path: "comentarios",
+        path: "comentarios",
         populate: {
           path: "autor",
           select: "nickname",
-          },
+        },
       },
     ]); // ahora muestra los comentarios
 
@@ -231,6 +232,34 @@ const obtenerComentariosDeUnPost = async (req, res) => {
   }
 };
 
+const darBanano = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const usuarioId = req.headers["x-usuario-id"];
+
+    const post = await Post.findById(id);
+    if (!post) return res.status(404).json({ message: "Post no encontrado" });
+
+    const yaTieneBanano = post.bananos.includes(usuarioId);
+
+    if (yaTieneBanano) {
+      post.bananos = post.bananos.filter(
+        (uid) => uid.toString() !== usuarioId.toString(),
+      );
+    } else {
+      post.bananos.push(usuarioId);
+    }
+    await post.save();
+    await redisClient.del("posts");
+    return res.status(200).json({
+      message: yaTieneBanano ? "Banano quitado" : "Banano agregado",
+      bananos: post.bananos,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error al procesar el banano" });
+  }
+};
 module.exports = {
   obtenerPosts,
   obtenerPost,
@@ -243,4 +272,5 @@ module.exports = {
   obtenerImagenesDePost,
   obtenerPostsDeUserId,
   obtenerComentariosDeUnPost,
+  darBanano
 };

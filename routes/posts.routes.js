@@ -9,7 +9,8 @@ const {
   eliminarImagenDePost,
   obtenerImagenesDePost,
   agregarImagenMulter,
-  obtenerComentariosDeUnPost
+  obtenerComentariosDeUnPost,
+  darBanano
 } = require("../controllers/posts.controllers.js");
 
 const {
@@ -19,6 +20,7 @@ const {
 const validarExistePost = require("../middlewares/validarExistePost.js");
 const validarPostId = require("../middlewares/validarPostId.js");
 const validarPostImage = require("../middlewares/validarImage.js");
+
 const { validarImageId } = require("../middlewares/validarImageId.js");
 const router = Router();
 
@@ -34,6 +36,7 @@ router.get("/:id", validarExistePost, obtenerPost); //funciona
 router.post("/", validarPost, crearPost); //funciona-
 router.put("/:id", validarPostId, validarActualizarPost, actualizarPost); //funciona-
 router.delete("/:id", validarPostId, eliminarPost); //funciona
+router.put("/:id/banano",validarPostId,darBanano)
 
 //Todos los comentarios de un post
 router.get("/:id/comentarios", validarPostId, obtenerComentariosDeUnPost);
