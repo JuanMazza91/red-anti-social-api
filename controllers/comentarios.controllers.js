@@ -13,7 +13,7 @@ const obtenerComentarios = async (req, res) => {
 const obtenerComentario = async (req, res) => {
   try {
     const comentario = await Comment.findById(req.comentario._id)
-      .populate("autor", "-password")
+      .populate("autor", "avatar", "-password")
       .populate("post");
 
     return res.status(200).json(comentario);

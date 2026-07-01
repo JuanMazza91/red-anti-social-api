@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: "mono1.png",
+      default: "mono1.jpeg",
     },
     seguidos: [
       {

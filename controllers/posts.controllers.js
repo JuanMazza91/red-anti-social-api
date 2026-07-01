@@ -20,7 +20,7 @@ const obtenerPosts = async (req, res) => {
         path: "comentarios",
         populate: {
           path: "autor",
-          select: "nickname",
+          select: "nickname avatar",
         },
       })
       .sort({ createdAt: -1 });
@@ -45,7 +45,7 @@ const obtenerPost = async (req, res) => {
     const postConComentarios = await req.post.populate([
       {
         path: "autor",
-        select: "nickname",
+        select: "nickname avatar",
       },
       {
         path: "tags",
