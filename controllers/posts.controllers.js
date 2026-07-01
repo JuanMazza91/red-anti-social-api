@@ -14,7 +14,7 @@ const obtenerPosts = async (req, res) => {
     }
 
     const posts = await Post.find()
-      .populate("autor", "-password")
+      .populate("autor", "nickname avatar")
       .populate("tags", "nombre")
       .populate({
         path: "comentarios",
@@ -55,7 +55,7 @@ const obtenerPost = async (req, res) => {
         path: "comentarios",
         populate: {
           path: "autor",
-          select: "nickname",
+          select: "nickname avatar",
         },
       },
     ]); // ahora muestra los comentarios
@@ -219,7 +219,7 @@ const obtenerComentariosDeUnPost = async (req, res) => {
       post: postId,
       visible: true,
     })
-      .populate("autor", "nickname") // Trae el nickname del creador del comentario
+      .populate("autor", "nickname avatar") // Trae el nickname del creador del comentario
       .sort({ createdAt: -1 }); // Los más recientes primero
 
     // RESPUESTA: Devolvemos los comentarios al cliente

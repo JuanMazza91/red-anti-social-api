@@ -3,7 +3,18 @@ const { redisClient } = require("../config/redis");
 
 const obtenerComentarios = async (req, res) => {
   try {
-    const comentarios = await Comment.find({ visible: true });
+    const comentarios = await Comment.find({ visible: true })
+    .populate({
+        path:"autor",
+        select:"nickname avatar",
+    });
+
+    console.log("AUTOR:");
+    console.log(comentarios[0]?.autor);
+    const usuario = await User.findById(comentarios[0].autor._id);
+    console.log("USUARIO COMPLETO:");
+    console.log(usuario);
+
     res.status(200).json(comentarios);
   } catch (error) {
     res.status(500).json({ message: "Error al obtener los comentarios" });
@@ -11,11 +22,14 @@ const obtenerComentarios = async (req, res) => {
 };
 
 const obtenerComentario = async (req, res) => {
+
   try {
     const comentario = await Comment.findById(req.comentario._id)
-      .populate("autor", "avatar", "-password")
+      .populate({
+        path:"autor",
+        select: "nickname avatar",
+      })
       .populate("post");
-
     return res.status(200).json(comentario);
   } catch (error) {
     console.error(error);
