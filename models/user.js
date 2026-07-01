@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema(
       required: [true, "la contraseña es obligatoria"],
       select: false,
     },
+    avatar: {
+      type: String,
+      default: "mono1.png",
+    },
     seguidos: [
       {
         type: mongoose.Schema.Types.ObjectId,

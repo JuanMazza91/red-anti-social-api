@@ -20,9 +20,19 @@ const obtenerUsuario = async (req, res) => {
 
 const crearUsuario = async (req, res) => {
   try {
-    const { nickname, email, password } = req.body;
-    const usuario = await User.create({ nickname, email, password });
-    res.status(201).json({ message: "Usuario creado correctamente", usuario });
+    const { nickname, email, password, avatar } = req.body;
+
+    const usuario = await User.create({
+      nickname,
+      email,
+      password,
+      avatar,
+    });
+
+    res.status(201).json({
+      message: "Usuario creado correctamente",
+      usuario,
+    });
   } catch (error) {
     console.error("ERROR COMPLETO:", error);
     res.status(500).json({ message: "Error al crear el usuario" });
@@ -31,16 +41,17 @@ const crearUsuario = async (req, res) => {
 
 const actualizarUsuario = async (req, res) => {
   try {
-    const { nickname, email, password } = req.body;
-    const usuario = req.usuario; // Obtenemos el usuario validado por el middleware
+    const { nickname, email, password, avatar } = req.body;
+    const usuario = req.usuario;
 
     if (nickname) usuario.nickname = nickname;
     if (email) usuario.email = email;
     if (password) usuario.password = password;
+    if (avatar) usuario.avatar = avatar;
 
     await usuario.save();
 
-    res.status(200).json({ message: "Usuario actualizado correctamente" });
+    res.status(200).json({ message: "Usuario actualizado correctamente", usuario });
   } catch (error) {
     res.status(500).json({ message: "Error al actualizar el usuario" });
   }
